@@ -1,9 +1,727 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Portfolio // Software & Automation</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e14;
+            --bg-secondary: #12161f;
+            --bg-tertiary: #1a1f2b;
+            --accent-green: #00ff88;
+            --accent-amber: #ffaa00;
+            --text-primary: #e6e6e6;
+            --text-secondary: #a0a0a0;
+            --text-dim: #666;
+            --border: #2a2f3b;
+            --glow: rgba(0, 255, 136, 0.3);
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Scanline effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 9999;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(10px); }
+        }
+
+        /* Grid background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            padding: 2rem 0;
+            border-bottom: 2px solid var(--accent-green);
+            margin-bottom: 3rem;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            text-shadow: 0 0 20px var(--glow);
+            margin-bottom: 0.5rem;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 12px;
+            height: 1.2em;
+            background: var(--accent-green);
+            animation: blink 1s step-end infinite;
+            margin-left: 4px;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .tagline {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .tagline::before {
+            content: '> ';
+            color: var(--accent-amber);
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a::before {
+            content: '$ ';
+            color: var(--accent-amber);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent-green);
+            border-bottom-color: var(--accent-green);
+        }
+
+        nav a:hover::before {
+            opacity: 1;
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 4rem;
+            animation: fadeIn 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        section:nth-child(1) { animation-delay: 0.1s; }
+        section:nth-child(2) { animation-delay: 0.2s; }
+        section:nth-child(3) { animation-delay: 0.3s; }
+        section:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.8rem;
+            color: var(--accent-amber);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title::before {
+            content: '##';
+            color: var(--accent-green);
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(to right, var(--border), transparent);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-green);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+            transform: translateX(4px);
+        }
+
+        .card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .card-meta {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: var(--bg-tertiary);
+            color: var(--accent-amber);
+            padding: 0.25rem 0.75rem;
+            font-size: 0.85rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            border-color: var(--accent-amber);
+            box-shadow: 0 0 10px rgba(255, 170, 0, 0.2);
+        }
+
+        /* Experience Timeline */
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            padding-bottom: 2rem;
+            border-left: 2px solid var(--border);
+        }
+
+        .timeline-item:last-child {
+            border-left-color: transparent;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--glow);
+        }
+
+        .timeline-date {
+            color: var(--accent-amber);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-size: 1.2rem;
+            color: var(--accent-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-company {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-description {
+            color: var(--text-secondary);
+        }
+
+        /* Notes Section */
+        .note-item {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent-amber);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .note-item:hover {
+            background: var(--bg-tertiary);
+            transform: translateX(4px);
+        }
+
+        .note-title {
+            color: var(--accent-amber);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .note-content {
+            color: var(--text-secondary);
+        }
+
+        /* Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .contact-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .contact-item:hover {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+            color: var(--accent-green);
+        }
+
+        .contact-label {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-value {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 0;
+            border-top: 2px solid var(--accent-green);
+            margin-top: 4rem;
+            text-align: center;
+            color: var(--text-dim);
+        }
+
+        footer::before {
+            content: 'EOF';
+            display: block;
+            color: var(--accent-amber);
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            nav {
+                gap: 1rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeOut 0.5s ease-out 1.5s forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        .loading-text {
+            font-family: 'Space Mono', monospace;
+            color: var(--accent-green);
+            font-size: 1.2rem;
+        }
+
+        .loading-text::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+    </style>
+</head>
 <body>
+    <div class="loading">
+        <div class="loading-text">$ initializing portfolio</div>
+    </div>
 
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
+    <div class="grid-bg"></div>
 
+    <div class="container">
+        <header>
+            <div class="terminal-header">
+                <span class="terminal-dot dot-red"></span>
+                <span class="terminal-dot dot-yellow"></span>
+                <span class="terminal-dot dot-green"></span>
+            </div>
+            <h1>Adrian Vasile Belei<span class="cursor"></span></h1>
+            <p class="tagline">Software Developer & Automation Specialist & Telecomunications Student</p>
+            <nav>
+                <a href="#projects">projects</a>
+                <a href="#experience">experience</a>
+                <a href="#notes">notes</a>
+                <a href="#contact">contact</a>
+            </nav>
+        </header>
+
+        <main>
+            <section id="projects">
+                <h2 class="section-title">Projects</h2>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Automated Deployment Pipeline</h3>
+                        <span class="card-meta">2024</span>
+                    </div>
+                    <p class="card-description">
+                        Built a comprehensive CI/CD pipeline that automates testing, building, and deployment processes. 
+                        Reduced deployment time by 70% and eliminated manual errors.
+                    </p>
+                    <div class="tags">
+                        <span class="tag">Docker</span>
+                        <span class="tag">Jenkins</span>
+                        <span class="tag">Python</span>
+                        <span class="tag">AWS</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Task Automation Framework</h3>
+                        <span class="card-meta">2023</span>
+                    </div>
+                    <p class="card-description">
+                        Developed a Python-based framework for automating repetitive business tasks. 
+                        Handles data processing, report generation, and email notifications.
+                    </p>
+                    <div class="tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Selenium</span>
+                        <span class="tag">Pandas</span>
+                        <span class="tag">API Integration</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Microservices Architecture</h3>
+                        <span class="card-meta">2023</span>
+                    </div>
+                    <p class="card-description">
+                        Designed and implemented a scalable microservices architecture for a high-traffic application. 
+                        Improved system reliability and enabled independent service deployment.
+                    </p>
+                    <div class="tags">
+                        <span class="tag">Node.js</span>
+                        <span class="tag">Kubernetes</span>
+                        <span class="tag">MongoDB</span>
+                        <span class="tag">RabbitMQ</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="experience">
+                <h2 class="section-title">Experience</h2>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">2023 - Present</div>
+                    <div class="timeline-title">Senior Software Developer</div>
+                    <div class="timeline-company">Tech Company Name</div>
+                    <p class="timeline-description">
+                        Leading development of automation solutions and backend services. 
+                        Mentoring junior developers and establishing best practices for code quality and deployment.
+                    </p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">2021 - 2023</div>
+                    <div class="timeline-title">Software Developer</div>
+                    <div class="timeline-company">Previous Company</div>
+                    <p class="timeline-description">
+                        Developed and maintained multiple web applications and automation scripts. 
+                        Collaborated with cross-functional teams to deliver high-quality software solutions.
+                    </p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">2019 - 2021</div>
+                    <div class="timeline-title">Junior Developer</div>
+                    <div class="timeline-company">Startup Name</div>
+                    <p class="timeline-description">
+                        Started career working on full-stack development projects. 
+                        Gained experience in agile methodologies and modern development practices.
+                    </p>
+                </div>
+            </section>
+
+            <section id="notes">
+                <h2 class="section-title">Notes & Insights</h2>
+                
+                <div class="note-item">
+                    <div class="note-title">// Automation Best Practices</div>
+                    <div class="note-content">
+                        Always prioritize idempotency in automation scripts. A process that can safely run multiple times 
+                        with the same result is far more robust than one that breaks on reruns.
+                    </div>
+                </div>
+
+                <div class="note-item">
+                    <div class="note-title">// On Code Quality</div>
+                    <div class="note-content">
+                        Write code as if the person maintaining it is a violent psychopath who knows where you live. 
+                        Clear documentation and clean code are not optional—they're essential.
+                    </div>
+                </div>
+
+                <div class="note-item">
+                    <div class="note-title">// Microservices Architecture</div>
+                    <div class="note-content">
+                        Don't build microservices until you have a monolith that's too complex. 
+                        Premature distribution is the root of all evil in software architecture.
+                    </div>
+                </div>
+
+                <div class="note-item">
+                    <div class="note-title">// Testing Philosophy</div>
+                    <div class="note-content">
+                        Integration tests give you confidence. Unit tests give you speed. 
+                        The right balance depends on your context, but never skip testing entirely.
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact">
+                <h2 class="section-title">Contact</h2>
+                
+                <div class="contact-grid">
+                    <a href="mailto:adrianvbelei@gmail.com" class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div>
+                            <div class="contact-label">Email</div>
+                            <div class="contact-value">adrianvbelei@gmail.com</div>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/adrianvbelei" class="contact-item" target="_blank">
+                        <div class="contact-icon">🔗</div>
+                        <div>
+                            <div class="contact-label">GitHub</div>
+                            <div class="contact-value">@adrianvbelei</div>
+                        </div>
+                    </a>
+
+                    <a href="https://linkedin.com/in/adrianvbelei/" class="contact-item" target="_blank">
+                        <div class="contact-icon">💼</div>
+                        <div>
+                            <div class="contact-label">LinkedIn</div>
+                            <div class="contact-value">/in/adrianvbelei</div>
+                        </div>
+                    </a>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">📍</div>
+                        <div>
+                            <div class="contact-label">Location</div>
+                            <div class="contact-value">Barcelona, Spain</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Adrian Vasile Belei. Built with code & coffee.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add typing effect to title
+        const title = document.querySelector('h1');
+        const originalText = title.textContent.replace('█', '');
+        title.textContent = '';
+        
+        setTimeout(() => {
+            let index = 0;
+            const typingInterval = setInterval(() => {
+                if (index < originalText.length) {
+                    title.textContent += originalText.charAt(index);
+                    index++;
+                } else {
+                    clearInterval(typingInterval);
+                    // Add cursor after typing is complete
+                    const cursor = document.createElement('span');
+                    cursor.className = 'cursor';
+                    title.appendChild(cursor);
+                }
+            }, 100);
+        }, 1500);
+    </script>
 </body>
 </html>
