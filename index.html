@@ -18,11 +18,13 @@
             --bg-tertiary: #1a1f2b;
             --accent-green: #00ff88;
             --accent-amber: #ffaa00;
+            --accent-cyan: #00d4ff;
             --text-primary: #e6e6e6;
             --text-secondary: #a0a0a0;
             --text-dim: #666;
             --border: #2a2f3b;
             --glow: rgba(0, 255, 136, 0.3);
+            --glow-cyan: rgba(0, 212, 255, 0.3);
         }
 
         body {
@@ -195,6 +197,7 @@
         section:nth-child(2) { animation-delay: 0.2s; }
         section:nth-child(3) { animation-delay: 0.3s; }
         section:nth-child(4) { animation-delay: 0.4s; }
+        section:nth-child(5) { animation-delay: 0.5s; }
 
         @keyframes fadeIn {
             from {
@@ -305,6 +308,100 @@
         .tag:hover {
             border-color: var(--accent-amber);
             box-shadow: 0 0 10px rgba(255, 170, 0, 0.2);
+        }
+
+        /* WIP Cards - Special Styling */
+        .wip-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .wip-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-cyan);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .wip-card:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+            transform: translateX(4px);
+        }
+
+        .wip-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .wip-card .card-title {
+            color: var(--accent-cyan);
+        }
+
+        .wip-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent-cyan);
+            padding: 0.25rem 0.75rem;
+            font-size: 0.85rem;
+            border: 1px solid var(--accent-cyan);
+            margin-bottom: 1rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .wip-badge::before {
+            content: '⚡';
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .progress-bar-container {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+            transition: width 1s ease-out;
+            box-shadow: 0 0 10px var(--glow-cyan);
         }
 
         /* Experience Timeline */
@@ -510,6 +607,7 @@
             <h1>Adrian Vasile Belei<span class="cursor"></span></h1>
             <p class="tagline">Software Developer & Automation Specialist & Telecomunications Student</p>
             <nav>
+                <a href="#wip">work in progress</a>
                 <a href="#projects">projects</a>
                 <a href="#experience">experience</a>
                 <a href="#notes">notes</a>
@@ -518,6 +616,93 @@
         </header>
 
         <main>
+            <section id="wip">
+                <h2 class="section-title">Work in Progress</h2>
+                
+                <div class="wip-card">
+                    <div class="wip-badge">ACTIVE DEVELOPMENT</div>
+                    <div class="card-header">
+                        <h3 class="card-title">Real-Time Monitoring Dashboard</h3>
+                        <span class="card-meta">Started: Apr 2026</span>
+                    </div>
+                    <p class="card-description">
+                        Building a real-time monitoring dashboard for tracking system metrics and performance across 
+                        distributed services. Features WebSocket connections, live data visualization, and automated alerting.
+                    </p>
+                    <div class="progress-bar-container">
+                        <div class="progress-label">
+                            <span>Progress</span>
+                            <span>75%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">React</span>
+                        <span class="tag">WebSocket</span>
+                        <span class="tag">D3.js</span>
+                        <span class="tag">Node.js</span>
+                        <span class="tag">Redis</span>
+                    </div>
+                </div>
+
+                <div class="wip-card">
+                    <div class="wip-badge">ACTIVE DEVELOPMENT</div>
+                    <div class="card-header">
+                        <h3 class="card-title">ML-Powered Code Review Assistant</h3>
+                        <span class="card-meta">Started: Mar 2026</span>
+                    </div>
+                    <p class="card-description">
+                        Developing an intelligent code review assistant that uses machine learning to suggest improvements, 
+                        detect potential bugs, and enforce coding standards. Integrates with GitHub and GitLab.
+                    </p>
+                    <div class="progress-bar-container">
+                        <div class="progress-label">
+                            <span>Progress</span>
+                            <span>45%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 45%;"></div>
+                        </div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">TensorFlow</span>
+                        <span class="tag">GitHub API</span>
+                        <span class="tag">NLP</span>
+                    </div>
+                </div>
+
+                <div class="wip-card">
+                    <div class="wip-badge">ACTIVE DEVELOPMENT</div>
+                    <div class="card-header">
+                        <h3 class="card-title">IoT Home Automation System</h3>
+                        <span class="card-meta">Started: Feb 2026</span>
+                    </div>
+                    <p class="card-description">
+                        Creating a comprehensive home automation system with custom firmware for ESP32 devices. 
+                        Includes mobile app control, voice assistant integration, and local-first architecture for privacy.
+                    </p>
+                    <div class="progress-bar-container">
+                        <div class="progress-label">
+                            <span>Progress</span>
+                            <span>60%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 60%;"></div>
+                        </div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">C++</span>
+                        <span class="tag">ESP32</span>
+                        <span class="tag">MQTT</span>
+                        <span class="tag">React Native</span>
+                        <span class="tag">Home Assistant</span>
+                    </div>
+                </div>
+            </section>
+
             <section id="projects">
                 <h2 class="section-title">Projects</h2>
                 
@@ -722,6 +907,28 @@
                 }
             }, 100);
         }, 1500);
+
+        // Animate progress bars when they come into view
+        const observerOptions = {
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const progressBars = entry.target.querySelectorAll('.progress-fill');
+                    progressBars.forEach(bar => {
+                        bar.style.width = bar.style.width; // Trigger animation
+                    });
+                }
+            });
+        }, observerOptions);
+
+        // Observe WIP section
+        const wipSection = document.querySelector('#wip');
+        if (wipSection) {
+            observer.observe(wipSection);
+        }
     </script>
 </body>
 </html>
